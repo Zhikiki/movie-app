@@ -171,6 +171,20 @@ app.get('/movies/genre/:ganreName', (req, res) => {
   }
 });
 
+// Returns a JSON object holding data about director by name (REED)
+app.get('/movies/directors/:direcrorName', (req, res) => {
+  const { direcrorName } = req.params;
+  const director = movies.find(
+    (movie) => movie.director.name === direcrorName
+  ).director;
+
+  if (director) {
+    res.status(200).json(director);
+  } else {
+    res.status(400).send('The director with this name is not found');
+  }
+});
+
 // returns a JSON object containing data about your top 10 movies
 // app.get('/movies', (req, res) => {
 //   res.json(topMovies);
