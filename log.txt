@@ -82,3 +82,5 @@ Timestamp: Fri Dec 09 2022 00:15:06 GMT+0100 (Central European Standard Time)
 ::1 - - [14/Dec/2022:19:44:18 +0000] "POST /users HTTP/1.1" 500 26 "-" "PostmanRuntime/7.29.2"
 ::1 - - [14/Dec/2022:19:52:21 +0000] "POST /users HTTP/1.1" 201 79 "-" "PostmanRuntime/7.29.2"
 ::1 - - [14/Dec/2022:19:52:44 +0000] "POST /users HTTP/1.1" 201 79 "-" "PostmanRuntime/7.29.2"
+::1 - - [14/Dec/2022:20:11:11 +0000] "PUT /users/1 HTTP/1.1" 200 50 "-" "PostmanRuntime/7.29.2"
+::1 - - [14/Dec/2022:20:12:02 +0000] "PUT /users/1 HTTP/1.1" 200 21 "-" "PostmanRuntime/7.29.2"

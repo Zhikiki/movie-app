@@ -208,6 +208,16 @@ app.post('/users', (req, res) => {
 // Returnes a text message indicating the information was updated.
 app.put('/users/:id', (req, res) => {
 const { id } = req.params;
+const updatedUser = req.body;
+
+let user = users.find(user => user.id == id);
+
+if (user) {
+  user.name = updatedUser.name;
+  res.status(200).send('User name was updated');
+} else {
+  res.status(400).send('No such user');
+}
 });
 
 // returns a JSON object containing data about your top 10 movies
