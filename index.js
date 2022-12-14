@@ -237,7 +237,7 @@ app.post('/users/:id/:movieTitle', (req, res) => {
 });
 
 // Delete movie from favorite list (DELETE)
-// A text message indicatingmwhether the movie was successfully removed from user's favorite list
+// A text message indicating mwhether the movie was successfully removed from user's favorite list
 app.delete('/users/:id/:movieTitle', (req, res) => {
   const { id, movieTitle } = req.params;
 
@@ -246,10 +246,35 @@ app.delete('/users/:id/:movieTitle', (req, res) => {
   if (user) {
     // Here we use filter because we want in the object favoriteMovies only movies with titles which are not
     // equal to the title of the movie that we want to remove
-    user.favoriteMovies = user.favoriteMovies.filter( title => title !== movieTitle);
+    user.favoriteMovies = user.favoriteMovies.filter(
+      (title) => title !== movieTitle
+    );
     res
       .status(200)
-      .send(`${movieTitle} has been removed from ${user.name}'s favorite movies`);
+      .send(
+        `${movieTitle} has been removed from ${user.name}'s favorite movies`
+      );
+  } else {
+    res.status(400).send(`User with ID ${id} does not exist`);
+  }
+});
+
+// Allow existing users to deregister (DELETE)
+app.delete('/users/:id', (req, res) => {
+  const { id } = req.params;
+
+  let user = users.find((user) => user.id == id);
+
+  if (user) {
+    // Here we use filter because we want in the object favoriteMovies only movies with titles which are not
+    // equal to the title of the movie that we want to remove
+    users = users.filter((user) => user.id != id);
+    res
+      .status(200)
+      .send(
+        `User ${user.name} has been deleted`
+      );
+
   } else {
     res.status(400).send(`User with ID ${id} does not exist`);
   }
