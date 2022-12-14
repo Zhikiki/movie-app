@@ -66,3 +66,8 @@ Timestamp: Fri Dec 09 2022 00:15:06 GMT+0100 (Central European Standard Time)
 ::1 - - [14/Dec/2022:17:38:37 +0000] "GET /movies/Schindler%23s%20List HTTP/1.1" 400 37 "-" "PostmanRuntime/7.29.2"
 ::1 - - [14/Dec/2022:17:41:12 +0000] "GET /movies/Schindler's%20List HTTP/1.1" 200 1051 "-" "PostmanRuntime/7.29.2"
 ::1 - - [14/Dec/2022:17:43:49 +0000] "GET /movies/some%20movie HTTP/1.1" 400 37 "-" "PostmanRuntime/7.29.2"
+::1 - - [14/Dec/2022:17:55:07 +0000] "GET /movies/ganre/drama HTTP/1.1" 404 157 "-" "PostmanRuntime/7.29.2"
+::1 - - [14/Dec/2022:17:55:21 +0000] "GET /movies/ganre/Drama HTTP/1.1" 404 157 "-" "PostmanRuntime/7.29.2"
+::1 - - [14/Dec/2022:17:55:48 +0000] "GET /movies/ganre/Drama HTTP/1.1" 404 157 "-" "PostmanRuntime/7.29.2"
+::1 - - [14/Dec/2022:17:57:53 +0000] "GET /movies/genre/Drama HTTP/1.1" 200 175 "-" "PostmanRuntime/7.29.2"
+::1 - - [14/Dec/2022:17:59:38 +0000] "GET /movies/Schindler's%20List HTTP/1.1" 200 1051 "-" "PostmanRuntime/7.29.2"

@@ -159,6 +159,18 @@ app.get('/movies/:title', (req, res) => {
   }
 });
 
+// Returns a JSON object holding data about ganre by name (REED)
+app.get('/movies/genre/:ganreName', (req, res) => {
+  const { ganreName } = req.params;
+  const ganre = movies.find((movie) => movie.ganre.name === ganreName).ganre;
+
+  if (ganre) {
+    res.status(200).json(ganre);
+  } else {
+    res.status(400).send('The ganre with this name is not found');
+  }
+});
+
 // returns a JSON object containing data about your top 10 movies
 // app.get('/movies', (req, res) => {
 //   res.json(topMovies);
