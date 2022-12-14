@@ -91,3 +91,7 @@ Timestamp: Fri Dec 09 2022 00:15:06 GMT+0100 (Central European Standard Time)
 ::1 - - [14/Dec/2022:21:04:27 +0000] "POST /users/2/favoritemovie HTTP/1.1" 201 72 "-" "PostmanRuntime/7.29.2"
 ::1 - - [14/Dec/2022:21:05:01 +0000] "POST /users/2/favoritemovie HTTP/1.1" 201 47 "-" "PostmanRuntime/7.29.2"
 ::1 - - [14/Dec/2022:21:08:42 +0000] "POST /users/2/favoritemovie HTTP/1.1" 201 53 "-" "PostmanRuntime/7.29.2"
+::1 - - [14/Dec/2022:21:25:48 +0000] "GET //users/2/The%20Godfather HTTP/1.1" 404 163 "-" "PostmanRuntime/7.29.2"
+::1 - - [14/Dec/2022:21:25:56 +0000] "DELETE //users/2/The%20Godfather HTTP/1.1" 404 166 "-" "PostmanRuntime/7.29.2"
+::1 - - [14/Dec/2022:21:26:09 +0000] "DELETE /users/2/The%20Godfather HTTP/1.1" 200 41 "-" "PostmanRuntime/7.29.2"
+::1 - - [14/Dec/2022:21:28:58 +0000] "DELETE /users/2/The%20Godfather HTTP/1.1" 200 57 "-" "PostmanRuntime/7.29.2"

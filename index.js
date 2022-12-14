@@ -133,7 +133,6 @@ let movies = [
 //   },
 // ];
 
-
 // Creates a stream for logging requests to log.txt
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {
   flags: 'a',
@@ -207,17 +206,17 @@ app.post('/users', (req, res) => {
 // Allow new users update their user info (UPDATE)
 // Returnes a text message indicating the information was updated.
 app.put('/users/:id', (req, res) => {
-const { id } = req.params;
-const updatedUser = req.body;
+  const { id } = req.params;
+  const updatedUser = req.body;
 
-let user = users.find(user => user.id == id);
+  let user = users.find((user) => user.id == id);
 
-if (user) {
-  user.name = updatedUser.name;
-  res.status(200).send(`User name was updated to ${updatedUser.name}`);
-} else {
-  res.status(400).send('No such user');
-}
+  if (user) {
+    user.name = updatedUser.name;
+    res.status(200).send(`User name was updated to ${updatedUser.name}`);
+  } else {
+    res.status(400).send('No such user');
+  }
 });
 
 // Adds movie to favorite list (CREATE)
@@ -225,17 +224,37 @@ if (user) {
 app.post('/users/:id/:movieTitle', (req, res) => {
   const { id, movieTitle } = req.params;
 
-
   let user = users.find((user) => user.id == id);
 
   if (user) {
     user.favoriteMovies.push(movieTitle);
-    res.status(201).send(`${movieTitle} has been added to ${user.name}'s favorite movies`);
-    
+    res
+      .status(201)
+      .send(`${movieTitle} has been added to ${user.name}'s favorite movies`);
   } else {
     res.status(400).send('No such user');
   }
 });
+
+// Delete movie from favorite list (DELETE)
+// A text message indicatingmwhether the movie was successfully removed from user's favorite list
+app.delete('/users/:id/:movieTitle', (req, res) => {
+  const { id, movieTitle } = req.params;
+
+  let user = users.find((user) => user.id == id);
+
+  if (user) {
+    // Here we use filter because we want in the object favoriteMovies only movies with titles which are not
+    // equal to the title of the movie that we want to remove
+    user.favoriteMovies = user.favoriteMovies.filter( title => title !== movieTitle);
+    res
+      .status(200)
+      .send(`${movieTitle} has been removed from ${user.name}'s favorite movies`);
+  } else {
+    res.status(400).send(`User with ID ${id} does not exist`);
+  }
+});
+
 // returns a JSON object containing data about your top 10 movies
 // app.get('/movies', (req, res) => {
 //   res.json(topMovies);
