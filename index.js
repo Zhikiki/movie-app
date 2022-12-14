@@ -8,7 +8,7 @@ const app = express();
 let users = [
   { id: 1, name: 'Kate', favoriteMovies: [] },
   { id: 2, name: 'Joe', favoriteMovies: ['The Godfather'] },
-  { id: 3, name: 'Richard', favoriteMovies: ['Schindler\'s list'] },
+  { id: 3, name: 'Richard', favoriteMovies: ["Schindler's list"] },
 ];
 
 let movies = [
@@ -139,10 +139,31 @@ app.use(morgan('combined', { stream: accessLogStream }));
 app.get('/', (req, res) => {
   res.send('Welcome to my movie-api app');
 });
-// returns a JSON object containing data about your top 10 movies
+
+// Returns a JSON object holding data about all the movies (REED)
 app.get('/movies', (req, res) => {
-  res.json(movies);
+  res.status(200).json(movies);
 });
+
+// Returns a JSON object holding data about a single movie by title (REED)
+app.get('/movies/:title', (req, res) => {
+  // const title = req.params.title; // below there's a new way of writing it
+  // Object Destructuring
+  const { title } = req.params;
+  const movie = movies.find((movie) => movie.title === title);
+
+  if (movie) {
+    res.status(200).json(movie);
+  } else {
+    res.status(400).send('The movie with this name is not found');
+  }
+});
+
+// returns a JSON object containing data about your top 10 movies
+// app.get('/movies', (req, res) => {
+//   res.json(topMovies);
+// });
+
 //Returns the API documentation
 // app.get('/documentation', (req, res) => {
 //   res.sendFile('public/documentation.html', { root: __dirname });
