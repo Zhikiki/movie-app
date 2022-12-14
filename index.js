@@ -214,12 +214,28 @@ let user = users.find(user => user.id == id);
 
 if (user) {
   user.name = updatedUser.name;
-  res.status(200).send('User name was updated');
+  res.status(200).send(`User name was updated to ${updatedUser.name}`);
 } else {
   res.status(400).send('No such user');
 }
 });
 
+// Adds movie to favorite list (CREATE)
+// Returnes a text message indicating the movie was added to user's favorite list
+app.post('/users/:id/:movieTitle', (req, res) => {
+  const { id, movieTitle } = req.params;
+
+
+  let user = users.find((user) => user.id == id);
+
+  if (user) {
+    user.favoriteMovies.push(movieTitle);
+    res.status(201).send(`${movieTitle} has been added to ${user.name}'s favorite movies`);
+    
+  } else {
+    res.status(400).send('No such user');
+  }
+});
 // returns a JSON object containing data about your top 10 movies
 // app.get('/movies', (req, res) => {
 //   res.json(topMovies);

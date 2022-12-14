@@ -112,17 +112,17 @@
                 <td>Allow new users update their user info</td>
                 <td>/users/:id</td>
                 <td>PUT</td>
-                <td>-</td>
+                <td>A JSON object holding new name of user, structured like this{ "name": "Kate Updated" }</td>
                 <td>A text message indicating the information was updated.</td>
             </tr>
 
 
             <tr>
                 <td>Adds movie to favorite list</td>
-                <td>/users/:Username/movies/:MovieID</td>
+                <td>/users/:id/:movieTitle</td>
                 <td>POST</td>
                 <td>-</td>
-                <td>A text message indicating the ithe movie was added to user's favorite list</td>
+                <td>A text message indicating that the movie was added to user's favorite list</td>
             </tr>
 
             <tr>
