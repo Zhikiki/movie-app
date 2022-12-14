@@ -1,9 +1,13 @@
 const express = require('express');
+const app = express();
+
 const morgan = require('morgan');
 const fs = require('fs');
 const path = require('path');
+const bodyParser = require('body-parser');
+const uuid = require('uuid');
 
-const app = express();
+app.use(bodyParser.json());
 
 let users = [
   { id: 1, name: 'Kate', favoriteMovies: [] },
@@ -129,7 +133,8 @@ let movies = [
 //   },
 // ];
 
-// logs all request to log.txt
+
+// Creates a stream for logging requests to log.txt
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {
   flags: 'a',
 });
@@ -183,6 +188,26 @@ app.get('/movies/directors/:direcrorName', (req, res) => {
   } else {
     res.status(400).send('The director with this name is not found');
   }
+});
+
+// Allow new users to Register (CREATE)
+// Returns a JSON object holding data about the users to add
+app.post('/users', (req, res) => {
+  const newUser = req.body;
+
+  if (newUser.name) {
+    newUser.id = uuid.v4();
+    users.push(newUser);
+    res.status(201).json(newUser);
+  } else {
+    res.status(400).send('Every user needs a name');
+  }
+});
+
+// Allow new users update their user info (UPDATE)
+// Returnes a text message indicating the information was updated.
+app.put('/users/:id', (req, res) => {
+const { id } = req.params;
 });
 
 // returns a JSON object containing data about your top 10 movies

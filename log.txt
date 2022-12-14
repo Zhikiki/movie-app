@@ -78,3 +78,7 @@ Timestamp: Fri Dec 09 2022 00:15:06 GMT+0100 (Central European Standard Time)
 ::1 - - [14/Dec/2022:18:59:46 +0000] "GET /movies/genre/Drama HTTP/1.1" 200 175 "-" "PostmanRuntime/7.29.2"
 ::1 - - [14/Dec/2022:19:08:26 +0000] "GET /movies/directors/:direcrorNameSteven%20Spilberg HTTP/1.1" 500 26 "-" "PostmanRuntime/7.29.2"
 ::1 - - [14/Dec/2022:19:08:41 +0000] "GET /movies/directors/Steven%20Spilberg HTTP/1.1" 200 513 "-" "PostmanRuntime/7.29.2"
+::1 - - [14/Dec/2022:19:42:02 +0000] "POST /users HTTP/1.1" 500 26 "-" "PostmanRuntime/7.29.2"
+::1 - - [14/Dec/2022:19:44:18 +0000] "POST /users HTTP/1.1" 500 26 "-" "PostmanRuntime/7.29.2"
+::1 - - [14/Dec/2022:19:52:21 +0000] "POST /users HTTP/1.1" 201 79 "-" "PostmanRuntime/7.29.2"
+::1 - - [14/Dec/2022:19:52:44 +0000] "POST /users HTTP/1.1" 201 79 "-" "PostmanRuntime/7.29.2"
