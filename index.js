@@ -285,10 +285,7 @@ app.delete('/users/:id', (req, res) => {
 //   res.json(topMovies);
 // });
 
-//Returns the API documentation
-// app.get('/documentation', (req, res) => {
-//   res.sendFile('public/documentation.html', { root: __dirname });
-// });
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ERROR Handling
