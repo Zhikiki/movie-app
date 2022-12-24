@@ -106,3 +106,7 @@ Timestamp: Fri Dec 09 2022 00:15:06 GMT+0100 (Central European Standard Time)
 ::1 - - [14/Dec/2022:21:55:38 +0000] "DELETE /users/2 HTTP/1.1" 200 25 "-" "PostmanRuntime/7.29.2"
 ::ffff:127.0.0.1 - - [14/Dec/2022:22:19:49 +0000] "GET /documentation.html HTTP/1.1" 200 5770 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
 ::ffff:127.0.0.1 - - [14/Dec/2022:22:19:49 +0000] "GET /public/styles.css HTTP/1.1" 404 156 "http://127.0.0.1:8080/documentation.html" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
+::1 - - [24/Dec/2022:07:49:50 +0000] "POST /users HTTP/1.1" 500 56 "-" "PostmanRuntime/7.30.0"
+::1 - - [24/Dec/2022:07:53:51 +0000] "POST /users HTTP/1.1" 201 184 "-" "PostmanRuntime/7.30.0"
+::1 - - [24/Dec/2022:08:08:03 +0000] "GET /movies HTTP/1.1" 200 3180 "-" "PostmanRuntime/7.30.0"
+::1 - - [24/Dec/2022:08:12:34 +0000] "GET /movies HTTP/1.1" 200 7482 "-" "PostmanRuntime/7.30.0"
