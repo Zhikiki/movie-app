@@ -210,7 +210,7 @@ app.get('/users', (req, res) => {
     });
 });
 
-// Allow new users update their user info (UPDATE)
+// !!!!!!! Allow new users update their user info (UPDATE)
 // Returnes JSON object with updated information.
 app.put('/users/:Username', (req, res) => {
   Users.findOneAndUpdate(
@@ -246,7 +246,7 @@ app.put('/users/:Username', (req, res) => {
   // }
 });
 
-// Adds movie to favorite list (CREATE)
+// !!!!!!!! Adds movie to favorite list (CREATE)
 // Returnes a text message indicating the movie was added to user's favorite list
 app.post('/users/:Username/movies/:MovieID', (req, res) => {
   Users.findOneAndUpdate(
@@ -300,20 +300,32 @@ app.delete('/users/:id/:movieTitle', (req, res) => {
   }
 });
 
-// Allow existing users to deregister (DELETE)
-app.delete('/users/:id', (req, res) => {
-  const { id } = req.params;
+// !!!!!!! Allow existing users to deregister (DELETE)
+app.delete('/users/:Username', (req, res) => {
 
-  let user = users.find((user) => user.id == id);
+  Users.findOneAndRemove({Username: req.params.Username}).then((user) => {
+    if (!user) {
+      res.status(400).send(req.params.Username + ' was not found');
+    } else {
+      res.status(200).send(req.params.Username + ' was deleted');
+    }
+  }).catch((err) => {
+    console.error(err);
+    res.status(500).send('Error: ' + err);
+  })
 
-  if (user) {
+  // const { id } = req.params;
+
+  // let user = users.find((user) => user.id == id);
+
+  // if (user) {
     // Here we use filter because we want in the object favoriteMovies only movies with titles which are not
     // equal to the title of the movie that we want to remove
-    users = users.filter((user) => user.id != id);
-    res.status(200).send(`User ${user.name} has been deleted`);
-  } else {
-    res.status(400).send(`User with ID ${id} does not exist`);
-  }
+  //   users = users.filter((user) => user.id != id);
+  //   res.status(200).send(`User ${user.name} has been deleted`);
+  // } else {
+  //   res.status(400).send(`User with ID ${id} does not exist`);
+  // }
 });
 
 // returns a JSON object containing data about your top 10 movies

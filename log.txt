@@ -126,3 +126,7 @@ Timestamp: Fri Dec 09 2022 00:15:06 GMT+0100 (Central European Standard Time)
 ::1 - - [29/Dec/2022:15:19:31 +0000] "POST /users/Mark%20Podonski/movies/ObjectId(%2263a4280d43f10bb00263fd71%22) HTTP/1.1" 500 156 "-" "PostmanRuntime/7.30.0"
 ::1 - - [29/Dec/2022:15:19:52 +0000] "POST /users/Mark%20Podonski/movies/63a4280d43f10bb00263fd71 HTTP/1.1" 200 210 "-" "PostmanRuntime/7.30.0"
 ::1 - - [29/Dec/2022:15:24:02 +0000] "POST /users/Mark%20Podonski/movies/63a4280d43f10bb00263fd71 HTTP/1.1" 500 156 "-" "PostmanRuntime/7.30.0"
+::1 - - [29/Dec/2022:17:02:19 +0000] "DELETE /users/Mark%20%20Podonski HTTP/1.1" 400 28 "-" "PostmanRuntime/7.30.0"
+::1 - - [29/Dec/2022:17:02:39 +0000] "GET /users HTTP/1.1" 201 1295 "-" "PostmanRuntime/7.30.0"
+::1 - - [29/Dec/2022:17:03:10 +0000] "DELETE /users/Mark%20Podonski HTTP/1.1" 200 25 "-" "PostmanRuntime/7.30.0"
+::1 - - [29/Dec/2022:17:08:41 +0000] "GET /users HTTP/1.1" 201 1084 "-" "PostmanRuntime/7.30.0"
