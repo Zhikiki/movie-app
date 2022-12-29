@@ -57,7 +57,7 @@ app.get('/movies/:title', (req, res) => {
 
 // !!!!!!! Returns a JSON object holding data about ganre by name (REED)
 // How to integrate if statement that will send a message
-// The ganre with this name ${movie.Genre} is not found
+// `The ganre with this name ${movie.Genre} is not found`
 app.get('/movies/genre/:ganreName', (req, res) => {
   Movies.findOne({ 'Genre.Name': req.params.ganreName })
     .then((movie) => {
@@ -78,18 +78,16 @@ app.get('/movies/genre/:ganreName', (req, res) => {
   // }
 });
 
-// Returns a JSON object holding data about director by name (REED)
+// !!!!!!! Returns a JSON object holding data about director by name (REED)
 app.get('/movies/directors/:direcrorName', (req, res) => {
-  const { direcrorName } = req.params;
-  const director = movies.find(
-    (movie) => movie.director.name === direcrorName
-  ).director;
-
-  if (director) {
-    res.status(200).json(director);
-  } else {
-    res.status(400).send('The director with this name is not found');
-  }
+  Movies.findOne({ 'Director.Name': req.params.direcrorName })
+    .then((movie) => {
+      res.status(200).json(movie.Director);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
 });
 
 // !!!!!!!!!!!!!Allow new users to Register (CREATE)
@@ -120,16 +118,6 @@ app.post('/users', (req, res) => {
       res.status(500).send('Error: ' + error);
     });
 });
-// const newUser = req.body;
-
-// if (newUser.name) {
-//   newUser.id = uuid.v4();
-//   users.push(newUser);
-//   res.status(201).json(newUser);
-// } else {
-//   res.status(400).send('Every user needs a name');
-// }
-// });
 
 // !!!!!!!!Returns a JSON object holding data about all the USERS (REED)
 app.get('/users', (req, res) => {
@@ -190,26 +178,58 @@ app.post('/users/:Username/movies/:MovieID', (req, res) => {
 
 // Delete movie from favorite list (DELETE)
 // A text message indicating mwhether the movie was successfully removed from user's favorite list
-app.delete('/users/:id/:movieTitle', (req, res) => {
-  const { id, movieTitle } = req.params;
-
-  let user = users.find((user) => user.id == id);
-
-  if (user) {
-    // Here we use filter because we want in the object favoriteMovies only movies with titles which are not
-    // equal to the title of the movie that we want to remove
-    user.favoriteMovies = user.favoriteMovies.filter(
-      (title) => title !== movieTitle
-    );
-    res
-      .status(200)
-      .send(
-        `${movieTitle} has been removed from ${user.name}'s favorite movies`
-      );
-  } else {
-    res.status(400).send(`User with ID ${id} does not exist`);
-  }
+app.delete('/users/:Username/movies/:MovieID', (req, res) => {
+  Users.findOneAndUpdate(
+    { Username: req.params.Username },
+    {
+      $pull: { FavoriteMovies: req.params.MovieID },
+    },
+    { new: true },
+    (err, updatedUser) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send('Error ' + err);
+      } else {
+        res.json(updatedUser);
+      }
+    }
+  );
 });
+// app.delete('/users/:Username/movies/:MovieID', (req, res) => {
+//   Users.findByIdAndUpdate(
+//     { Username: req.params.Username },
+//     {
+//       $pull: { FavoriteMovies: req.params.MovieID },
+//     },
+//     { new: true },
+//     (err, updatedUser) => {
+//       if (err) {
+//         console.error(err);
+//         res.status(500).send('Error: ' + err);
+//       } else {
+//         res.json(updatedUser);
+//       }
+//     }
+//   );
+// const { id, movieTitle } = req.params;
+
+// let user = users.find((user) => user.id == id);
+
+// if (user) {
+// Here we use filter because we want in the object favoriteMovies only movies with titles which are not
+// equal to the title of the movie that we want to remove
+// user.favoriteMovies = user.favoriteMovies.filter(
+//     (title) => title !== movieTitle
+//   );
+//   res
+//     .status(200)
+//     .send(
+//       `${movieTitle} has been removed from ${user.name}'s favorite movies`
+//     );
+// } else {
+//   res.status(400).send(`User with ID ${id} does not exist`);
+// }
+// });
 
 // !!!!!!! Allow existing users to deregister (DELETE)
 app.delete('/users/:Username', (req, res) => {
@@ -225,25 +245,7 @@ app.delete('/users/:Username', (req, res) => {
       console.error(err);
       res.status(500).send('Error: ' + err);
     });
-
-  // const { id } = req.params;
-
-  // let user = users.find((user) => user.id == id);
-
-  // if (user) {
-  // Here we use filter because we want in the object favoriteMovies only movies with titles which are not
-  // equal to the title of the movie that we want to remove
-  //   users = users.filter((user) => user.id != id);
-  //   res.status(200).send(`User ${user.name} has been deleted`);
-  // } else {
-  //   res.status(400).send(`User with ID ${id} does not exist`);
-  // }
 });
-
-// returns a JSON object containing data about your top 10 movies
-// app.get('/movies', (req, res) => {
-//   res.json(topMovies);
-// });
 
 app.use(express.static(path.join(__dirname, 'public')));
 
