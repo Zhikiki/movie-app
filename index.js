@@ -198,37 +198,83 @@ app.post('/users', (req, res) => {
 // }
 // });
 
+// !!!!!!!!Returns a JSON object holding data about all the USERS (REED)
+app.get('/users', (req, res) => {
+  Users.find()
+    .then((users) => {
+      res.status(201).json(users);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+});
+
 // Allow new users update their user info (UPDATE)
-// Returnes a text message indicating the information was updated.
-app.put('/users/:id', (req, res) => {
-  const { id } = req.params;
-  const updatedUser = req.body;
+// Returnes JSON object with updated information.
+app.put('/users/:Username', (req, res) => {
+  Users.findOneAndUpdate(
+    { Username: req.params.Username },
+    {
+      $set: {
+        Username: req.body.Username,
+        Password: req.body.Password,
+        Email: req.body.Email,
+        Birthday: req.body.Birthday,
+      },
+    },
+    { new: true },
+    (err, updatedUser) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+      } else {
+        res.json(updatedUser);
+      }
+    }
+  );
+  // const { id } = req.params;
+  // const updatedUser = req.body;
 
-  let user = users.find((user) => user.id == id);
+  // let user = users.find((user) => user.id == id);
 
-  if (user) {
-    user.name = updatedUser.name;
-    res.status(200).send(`User name was updated to ${updatedUser.name}`);
-  } else {
-    res.status(400).send('No such user');
-  }
+  // if (user) {
+  //   user.name = updatedUser.name;
+  //   res.status(200).send(`User name was updated to ${updatedUser.name}`);
+  // } else {
+  //   res.status(400).send('No such user');
+  // }
 });
 
 // Adds movie to favorite list (CREATE)
 // Returnes a text message indicating the movie was added to user's favorite list
-app.post('/users/:id/:movieTitle', (req, res) => {
-  const { id, movieTitle } = req.params;
+app.post('/users/:Username/movies/:MovieID', (req, res) => {
+  Users.findOneAndUpdate(
+    { Username: req.params.Username },
+    {
+      $push: { FavoriteMovies: req.params.MovieID },
+    },
+    { new: true },
+    (err, updatedUser) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+      } else {
+        res.json(updatedUser);
+      }
+    }
+  );
 
-  let user = users.find((user) => user.id == id);
-
-  if (user) {
-    user.favoriteMovies.push(movieTitle);
-    res
-      .status(201)
-      .send(`${movieTitle} has been added to ${user.name}'s favorite movies`);
-  } else {
-    res.status(400).send('No such user');
-  }
+  // const { id, movieTitle } = req.params;
+  // let user = users.find((user) => user.id == id);
+  // if (user) {
+  //   user.favoriteMovies.push(movieTitle);
+  //   res
+  //     .status(201)
+  //     .send(`${movieTitle} has been added to ${user.name}'s favorite movies`);
+  // } else {
+  //   res.status(400).send('No such user');
+  // }
 });
 
 // Delete movie from favorite list (DELETE)
