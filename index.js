@@ -31,7 +31,7 @@ app.get('/', (req, res) => {
   res.send('Welcome to my movie-api app');
 });
 
-// !!!!!!!!!!!Returns a JSON object holding data about all the movies (REED)
+// Returns a JSON object holding data about all the movies (REED)
 app.get('/movies', (req, res) => {
   Movies.find()
     .then((movies) => {
@@ -90,8 +90,46 @@ app.get('/movies/directors/:direcrorName', (req, res) => {
     });
 });
 
+// Returns JSON object with newly created movie (CREATE)
+app.post('/movies', (req, res) => {
+  Movies.findOne({ Title: req.body.Title })
+    .then((movie) => {
+      if (movie) {
+        return res.status(400).send(req.body.Title + ' aleady exists');
+      } else {
+        Movies.create({
+          Title: req.body.Title,
+          Description: req.body.Description,
+          Genre: {
+            Name: req.body.Genre.Name,
+            Description: req.body.Genre.Description,
+          },
+          Director: {
+            Name: req.body.Director.Name,
+            Bio: req.body.Director.Bio,
+          },
+          Actors: req.body.Actors,
+          ImagePath: req.body.ImageURL,
+          Featured: req.body.Featured,
+        })
+          .then((movie) => {
+            res.status(201).json(movie);
+          })
+          .catch((error) => {
+            console.error(error);
+            res.status(500).send('Error: ' + error);
+          });
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    });
+});
+
 // !!!!!!!!!!!!!Allow new users to Register (CREATE)
 // Returns a JSON object holding data about the users to add
+// date appears with month -1 (if i put april in new user appears march)
 app.post('/users', (req, res) => {
   Users.findOne({ Username: req.body.Username })
     .then((user) => {
@@ -133,6 +171,7 @@ app.get('/users', (req, res) => {
 
 // !!!!!!! Allow new users update their user info (UPDATE)
 // Returnes JSON object with updated information.
+
 app.put('/users/:Username', (req, res) => {
   Users.findOneAndUpdate(
     { Username: req.params.Username },
@@ -157,7 +196,8 @@ app.put('/users/:Username', (req, res) => {
 });
 
 // !!!!!!!! Adds movie to favorite list (CREATE)
-// Returnes a text message indicating the movie was added to user's favorite list
+// Returnes JSON with updated user info
+// Better to implement check if movie is already added to favorite
 app.post('/users/:Username/movies/:MovieID', (req, res) => {
   Users.findOneAndUpdate(
     { Username: req.params.Username },
@@ -177,7 +217,7 @@ app.post('/users/:Username/movies/:MovieID', (req, res) => {
 });
 
 // Delete movie from favorite list (DELETE)
-// A text message indicating mwhether the movie was successfully removed from user's favorite list
+// A text message indicating whether the movie was successfully removed from user's favorite list
 app.delete('/users/:Username/movies/:MovieID', (req, res) => {
   Users.findOneAndUpdate(
     { Username: req.params.Username },
@@ -195,41 +235,6 @@ app.delete('/users/:Username/movies/:MovieID', (req, res) => {
     }
   );
 });
-// app.delete('/users/:Username/movies/:MovieID', (req, res) => {
-//   Users.findByIdAndUpdate(
-//     { Username: req.params.Username },
-//     {
-//       $pull: { FavoriteMovies: req.params.MovieID },
-//     },
-//     { new: true },
-//     (err, updatedUser) => {
-//       if (err) {
-//         console.error(err);
-//         res.status(500).send('Error: ' + err);
-//       } else {
-//         res.json(updatedUser);
-//       }
-//     }
-//   );
-// const { id, movieTitle } = req.params;
-
-// let user = users.find((user) => user.id == id);
-
-// if (user) {
-// Here we use filter because we want in the object favoriteMovies only movies with titles which are not
-// equal to the title of the movie that we want to remove
-// user.favoriteMovies = user.favoriteMovies.filter(
-//     (title) => title !== movieTitle
-//   );
-//   res
-//     .status(200)
-//     .send(
-//       `${movieTitle} has been removed from ${user.name}'s favorite movies`
-//     );
-// } else {
-//   res.status(400).send(`User with ID ${id} does not exist`);
-// }
-// });
 
 // !!!!!!! Allow existing users to deregister (DELETE)
 app.delete('/users/:Username', (req, res) => {

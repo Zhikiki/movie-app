@@ -23,6 +23,7 @@
             title to the user</li>
         <li>Return data about a genre (description) by name/title</li>
         <li>Return data about a director (bio, birth year, death year) by name</li>
+        <li>Allows users to add movie to movies library</li>
         <li>Allow new users to register</li>
         <li>Allow users to update their user info</li>
         <li>Allow users to add a movie to their list of favorites</li>
@@ -59,27 +60,36 @@
                 <td>GET</td>
                 <td>-</td>
                 <td>A JSON object holding data about a single movie, containing a title, description, ganre, director,
-                    year of production. For example:
-                    <p>{ "title": "The Godfather",
-                        <br>"description": "The aging....",
-                        <br>"ganre": { "name": "Crime", "description": "Crime film ...", },
-                        <br>"director": {"name": "Francis Ford Coppola", "bio": "Francis Ford Coppola, (born April 7
-                        ...",
-                        "birth": 1939,},
-                        <br>"imageURL": "https://www.imdb.com...",
-                        <br>"featured": false,
-                        <br>"year": 1972,}
+                    actors, ImagePath. For example:
+                    <p>
+                        {
+                        <br>"Genre": {
+                        "Name": "Action",
+                        "Description": "Action film is a film genre..."
+                        },
+                        <br>"Director": {
+                        "Name": "Peter Jackson",
+                        "Bio": "Sir Peter Robert Jackson is a New Zealand film director...",
+                        "Birth": "1961"
+                        },
+                        <br>"Actors": [],
+                        <br>"_id": "63a4280d43f10bb00263fd71",
+                        <br>"Title": "The Lord of the Rings: The Fellowship of the Ring",
+                        <br>"Description": "A meek Hobbit from the Shire...",
+                        <br>"ImagePath": "TLOTR_The-Fellowship-of-the-Ring.png",
+                        <br>"Featured": false
+                        }
                     </p>
                 </td>
             </tr>
 
             <tr>
                 <td>Get Genre by Name</td>
-                <td>/movies/genre/:Name</td>
+                <td>/movies/genre/:genreName</td>
                 <td>GET</td>
                 <td>-</td>
                 <td>A JSON object holding data about the genre of a movie. For example:
-                    <p>{ "name": 'Crime', <br>"description": "Crime film ...", },
+                    <p>{ "Name": 'Crime', <br>"Description": "Crime film ...", },
 
                     </p>
                 </td>
@@ -87,13 +97,54 @@
 
             <tr>
                 <td>Get director data by name</td>
-                <td>/movies/director/:Name</td>
+                <td>/movies/director/:directorName</td>
                 <td>GET</td>
                 <td>-</td>
                 <td>A JSON object holding data about the data of a director. For example:
                     <p>{"name": "Francis Ford Coppola", <br>"bio": "Francis Ford Coppola, (born April 7 ...",
                         <br>"birth":
-                        1939,}</p>
+                        1939,}
+                    </p>
+                </td>
+            </tr>
+
+            <tr>
+                <td>Allow to add new movie to movie library</td>
+                <td>/movies</td>
+                <td>POST</td>
+                <td>A JSON object holding data about the movie that needs to be added, structured like this <br>
+                    {
+                    <br>"Title": "Some Name for movie",
+                    <br>"Description": "Very interesting movie",
+                    <br>"Genre": {
+                    "Name": "Action",
+                    "Description": "Action film ..."
+                    },
+                    <br>"Director": {
+                    "Name": "Some Director",
+                    "Bio": "Very famous director"
+                    },
+                    <br>"ImagePath": "someurl.png",
+                    <br>"Featured": false }
+                    <br><br><strong>NOTE</strong> that Title and Description fields are strictly required
+                </td>
+                <td>A JSON object holding data about the movie that was added, structured like this <br>{
+                    <br>"Title": "Some Name for movie",
+                    <br>"Description": "Very interesting movie",
+                    <br>"Genre": {
+                    "Name": "Action",
+                    "Description": "Action film ..."
+                    },
+                    <br>"Director": {
+                    "Name": "Some Director",
+                    "Bio": "Very famous director"
+                    },
+                    <br>"Actors": [],
+                    <br>"Featured": false,
+                    <br>"_id": "63adf836bbb004a72a6768d5",
+                    <br>"__v": 0
+                    }
+                    <br><br><strong>NOTE</strong> Movie ID is created automatically
                 </td>
             </tr>
 
@@ -101,48 +152,79 @@
                 <td>Allow new users to Register</td>
                 <td>/users</td>
                 <td>POST</td>
-                <td>A JSON object holding data about the users to add, structured like this { "name" : "Vincent",
-                    "Password": "1234", "Email": ""vincentokafor@gmail.com", "Birthday": "02-05-1996" } </td>
-                <td>A JSON object holding data about the user that was added, structured like this { "name" : "Vincent",
-                    "Password": "1234", "Email": "vincentokafor@gmail.com", "Birthday": "02-05-1996" } including an ID
+                <td>A JSON object holding data about the users to add, structured like this <br>{
+                    <br>"Username": "Chikiua",
+                    <br>"Password": "787",
+                    <br>"Email": "test8@gmail.com",
+                    <br>"Birthday": new Date("1985-02-19") }
+                    <br><br><strong>NOTE</strong> that Username, Password and Email fields are strictly required
+                </td>
+                <td>A JSON object holding data about the user that was added, structured like this <br>{
+                    <br>"Username": "Chikiua",
+                    <br>"Password": "787",
+                    <br>"Email": "test8@gmail.com",
+                    <br>"Birthday": new Date("1985-02-19") }
+                    <br><br><strong>NOTE</strong> User ID is creades automatically
                 </td>
             </tr>
 
             <tr>
                 <td>Allow new users update their user info</td>
-                <td>/users/:id</td>
+                <td>/users/:Username</td>
                 <td>PUT</td>
                 <td>A JSON object holding new name of user, structured like this{ "name": "Kate Updated" }</td>
-                <td>A text message indicating the information was updated.</td>
+                <td>A JSON object with updated user information, structured like this: <br>{
+                    <br>"_id": "63ad94d729a15d58ce6738cb",
+                    <br>"Username": "Susi Mo",
+                    <br>"Password": "password444",
+                    <br>"Email": "susannamonini@gmail.com",
+                    <br>"Birthday": "1953-09-01T23:00:00.000Z",
+                    <br>"FavoriteMovies": [],
+                    }
+                </td>
             </tr>
 
 
             <tr>
                 <td>Adds movie to favorite list</td>
-                <td>/users/:id/:movieTitle</td>
+                <td>/users/:Username/movies/:MovieID</td>
                 <td>POST</td>
                 <td>-</td>
-                <td>A text message indicating that the movie was added to user's favorite list</td>
+                <td>A JSON object with updated user information, structured like this: <br>{
+                    <br>"_id": "63ad94d729a15d58ce6738cb",
+                    <br>"Username": "Susi Mo",
+                    <br>"Password": "password444",
+                    <br>"Email": "susannamonini@gmail.com",
+                    <br>"Birthday": "1953-09-01T23:00:00.000Z",
+                    <br>"FavoriteMovies": ["63a427b843f10bb00263fd6f"],
+                    }t
+                </td>
             </tr>
 
             <tr>
                 <td>Delete movie from favorite list</td>
-                <td>/users/:id/:movieTitle</td>
+                <td>/users/:Username/movies/:MovieID</td>
                 <td>DELETE</td>
                 <td>-</td>
-                <td>A text message indicating
-                    whether the movie was
-                    successfully removed from user's favorite list</td>
+                <td>A JSON object with updated user information, structured like this: <br>{
+                    <br>"_id": "63ad94d729a15d58ce6738cb",
+                    <br>"Username": "Susi Mo",
+                    <br>"Password": "password444",
+                    <br>"Email": "susannamonini@gmail.com",
+                    <br>"Birthday": "1953-09-01T23:00:00.000Z",
+                    <br>"FavoriteMovies": [],
+                    }t
+                </td>
             </tr>
 
             <tr>
                 <td>Allow existing users to deregister</td>
-                <td>/users/:id</td>
+                <td>/users/:Username</td>
                 <td>DELETE</td>
                 <td>-</td>
                 <td>A text message indicating
                     whether the user was
-                    successfully removed</td>
+                    successfully deleteded</td>
             </tr>
         </tbody>
     </table>
