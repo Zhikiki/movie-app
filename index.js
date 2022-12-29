@@ -97,7 +97,7 @@ app.get('/', (req, res) => {
   res.send('Welcome to my movie-api app');
 });
 
-// Returns a JSON object holding data about all the movies (REED)
+// !!!!!!!!!!!Returns a JSON object holding data about all the movies (REED)
 app.get('/movies', (req, res) => {
   Movies.find()
     .then((movies) => {
@@ -112,18 +112,25 @@ app.get('/movies', (req, res) => {
 //   res.status(200).json(movies);
 // });
 
-// Returns a JSON object holding data about a single movie by title (REED)
+// !!!!!!!!!!Returns a JSON object holding data about a single movie by title (REED)
 app.get('/movies/:title', (req, res) => {
+  Movies.findOne({ Title: req.params.title })
+    .then((movie) => {
+      res.status(200).json(movie);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
   // const title = req.params.title; // below there's a new way of writing it
   // Object Destructuring
-  const { title } = req.params;
-  const movie = movies.find((movie) => movie.title === title);
-
-  if (movie) {
-    res.status(200).json(movie);
-  } else {
-    res.status(400).send('The movie with this name is not found');
-  }
+  // const { title } = req.params;
+  // const movie = movies.find((movie) => movie.title === title);
+  // if (movie) {
+  //   res.status(200).json(movie);
+  // } else {
+  //   res.status(400).send('The movie with this name is not found');
+  // }
 });
 
 // Returns a JSON object holding data about ganre by name (REED)
@@ -152,13 +159,13 @@ app.get('/movies/directors/:direcrorName', (req, res) => {
   }
 });
 
-// Allow new users to Register (CREATE)
+// !!!!!!!!!!!!!Allow new users to Register (CREATE)
 // Returns a JSON object holding data about the users to add
 app.post('/users', (req, res) => {
   Users.findOne({ Username: req.body.Username })
     .then((user) => {
       if (user) {
-        return res.status(400).send(req.body.Username + 'already exists');
+        return res.status(400).send(req.body.Username + ' already exists');
       } else {
         Users.create({
           Username: req.body.Username,
