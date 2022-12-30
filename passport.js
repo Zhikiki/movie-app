@@ -1,6 +1,6 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const Models = require('/.models.js');
+const Models = require('./models.js');
 const passportJWT = require('passport-jwt');
 
 let Users = Models.User;
@@ -15,8 +15,8 @@ passport.use(
       passwordField: 'Password',
     },
     (username, password, callback) => {
-        // Logging usrname and password that we got from request body
-      console.log(username + ' ' + password);
+      // Logging usrname and password that we got from request body
+      console.log(username + '  ' + password);
       // Using Mongoose model to check DB for user with the same name
       Users.findOne({ Username: username }, (error, user) => {
         // If there is error, we are logging it, error message is passed to callback function
@@ -24,6 +24,7 @@ passport.use(
           console.log(error);
           return callback(error);
         }
+
         // If there is no such user in Mongoose DB error message is passed to callback function
         if (!user) {
           console.log('incorrect username');
@@ -31,6 +32,7 @@ passport.use(
             message: 'Incorrect username or password.',
           });
         }
+
         // If there is a match in Mongoose DB callback function is being executed (this is login endpoint)
         console.log('finished');
         return callback(null, user);
@@ -47,8 +49,9 @@ passport.use(
       // a “secret” key to verify the signature of the JWT.
       secretOrKey: 'your_jwt_secret',
     },
-    (jwtPayLoad, callback) => {
-      return Users.findByID(jwtPayLoad._id)
+
+    (jwtPayload, callback) => {
+      return Users.findById(jwtPayload._id)
         .then((user) => {
           return callback(null, user);
         })
@@ -58,3 +61,4 @@ passport.use(
     }
   )
 );
+
