@@ -31,8 +31,15 @@ app.get('/', (req, res) => {
   res.send('Welcome to my movie-api app');
 });
 
+// Importing auth.js - end point for registrated users to log in
+let auth = require('./auth')(app);
+// importing Passport module and passport.js file
+const passport = require('passport');
+require('./passport');
+
+
 // Returns a JSON object holding data about all the movies (REED)
-app.get('/movies', (req, res) => {
+app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.find()
     .then((movies) => {
       res.status(200).json(movies);
@@ -43,7 +50,7 @@ app.get('/movies', (req, res) => {
     });
 });
 
-// !!!!!!!!!!Returns a JSON object holding data about a single movie by title (REED)
+// Returns a JSON object holding data about a single movie by title (REED)
 app.get('/movies/:title', (req, res) => {
   Movies.findOne({ Title: req.params.title })
     .then((movie) => {
