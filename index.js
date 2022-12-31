@@ -26,16 +26,19 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {
 });
 app.use(morgan('combined', { stream: accessLogStream }));
 
-//  returns a default textual response
-app.get('/', (req, res) => {
-  res.send('Welcome to my movie-api app');
-});
+const cors = require('cors');
+app.use(cors());
 
 // Importing auth.js - end point for registrated users to log in
 let auth = require('./auth')(app);
 // importing Passport module and passport.js file
 const passport = require('passport');
 require('./passport');
+
+//  returns a default textual response
+app.get('/', (req, res) => {
+  res.send('Welcome to my movie-api app');
+});
 
 // Returns a JSON object holding data about all the movies (REED)
 app.get(
