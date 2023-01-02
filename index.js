@@ -118,73 +118,73 @@ app.get(
 );
 
 // Returns JSON object with newly created movie (CREATE)
-// app.post(
-//   '/movies',
-//   passport.authenticate('jwt', { session: false }),
-//   [
-//     check('Title', 'Title is required').not().isEmpty(),
-//     check('Title', 'Title contains not allowed characters - ').matches(
-//       /^[A-Za-z0-9 .,'"!?%&]+$/
-//     ),
-//     check('Description', 'Description is required').not().isEmpty(),
-//     check(
-//       'Genre.Name',
-//       'Genre name contains non alphanumeric characters - not allowed'
-//     ).isAlphanumeric(),
-//     check(
-//       'Genre.Description',
-//       'Genre description contains non alphanumeric characters - not allowed'
-//     ).isAlphanumeric(),
-//     check(
-//       'Director.Name',
-//       'Director name contains non alphanumeric characters - not allowed'
-//     ).isAlphanumeric(),
-//     check(
-//       'Director.Bio',
-//       'Director bio contains non alphanumeric characters - not allowed'
-//     ).isAlphanumeric(),
-//     check('Actors', 'Actors contains not allowed characters').matches(
-//       /^[A-Za-z0-9 .,'"!?%&]+$/
-//     ),
-//     check('Featured', "Featured can be only boolean 'true' or 'false'")
-//       .isBoolean,
-//   ],
-//   (req, res) => {
-//     Movies.findOne({ Title: req.body.Title })
-//       .then((movie) => {
-//         if (movie) {
-//           return res.status(400).send(req.body.Title + ' aleady exists');
-//         } else {
-//           Movies.create({
-//             Title: req.body.Title,
-//             Description: req.body.Description,
-//             Genre: {
-//               Name: req.body.Genre.Name,
-//               Description: req.body.Genre.Description,
-//             },
-//             Director: {
-//               Name: req.body.Director.Name,
-//               Bio: req.body.Director.Bio,
-//             },
-//             Actors: req.body.Actors,
-//             ImagePath: req.body.ImageURL,
-//             Featured: req.body.Featured,
-//           })
-//             .then((movie) => {
-//               res.status(201).json(movie);
-//             })
-//             .catch((error) => {
-//               console.error(error);
-//               res.status(500).send('Error: ' + error);
-//             });
-//         }
-//       })
-//       .catch((error) => {
-//         console.error(error);
-//         res.status(500).send('Error: ' + error);
-//       });
-//   }
-// );
+app.post(
+  '/movies',
+  passport.authenticate('jwt', { session: false }),
+  // [
+  //   check('Title', 'Title is required').not().isEmpty(),
+  //   check('Title', 'Title contains not allowed characters - ').matches(
+  //     /^[A-Za-z0-9 .,'"!?%&]+$/
+  //   ),
+  //   check('Description', 'Description is required').not().isEmpty(),
+  //   check(
+  //     'Genre.Name',
+  //     'Genre name contains non alphanumeric characters - not allowed'
+  //   ).isAlphanumeric(),
+  //   check(
+  //     'Genre.Description',
+  //     'Genre description contains non alphanumeric characters - not allowed'
+  //   ).isAlphanumeric(),
+  //   check(
+  //     'Director.Name',
+  //     'Director name contains non alphanumeric characters - not allowed'
+  //   ).isAlphanumeric(),
+  //   check(
+  //     'Director.Bio',
+  //     'Director bio contains non alphanumeric characters - not allowed'
+  //   ).isAlphanumeric(),
+  //   check('Actors', 'Actors contains not allowed characters').matches(
+  //     /^[A-Za-z0-9 .,'"!?%&]+$/
+  //   ),
+  //   check('Featured', "Featured can be only boolean 'true' or 'false'")
+  //     .isBoolean,
+  // ],
+  (req, res) => {
+    Movies.findOne({ Title: req.body.Title })
+      .then((movie) => {
+        if (movie) {
+          return res.status(400).send(req.body.Title + ' aleady exists');
+        } else {
+          Movies.create({
+            Title: req.body.Title,
+            Description: req.body.Description,
+            Genre: {
+              Name: req.body.Genre.Name,
+              Description: req.body.Genre.Description,
+            },
+            Director: {
+              Name: req.body.Director.Name,
+              Bio: req.body.Director.Bio,
+            },
+            Actors: req.body.Actors,
+            ImagePath: req.body.ImageURL,
+            Featured: req.body.Featured,
+          })
+            .then((movie) => {
+              res.status(201).json(movie);
+            })
+            .catch((error) => {
+              console.error(error);
+              res.status(500).send('Error: ' + error);
+            });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
+      });
+  }
+);
 
 // Allow users to update movie info (UPDATE)
 // Can i take all validation criterias to "Create movie" endpoints
@@ -256,6 +256,25 @@ app.get(
 //     );
 //   }
 // );
+
+app.delete(
+  '/movies/:Title',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    Movies.findOneAndRemove({ Title: req.params.Title })
+      .then((movie) => {
+        if (!movie) {
+          res.status(400).send(req.params.Title + ' was not found');
+        } else {
+          res.status(200).send(req.params.Title + ' was deleted');
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+      });
+  }
+);
 
 // !!!!!!!!!!!!!Allow new users to Register (CREATE)
 // Returns a JSON object holding data about the users to add
