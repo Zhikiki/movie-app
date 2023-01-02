@@ -266,17 +266,19 @@ app.post(
   // Validation logic for request
 
   [
-    check('Username', 'Username is required').isLength({ min: 3 }),
+    check('Username', 'Username shall be at least 5 characters long.').isLength(
+      { min: 3 }
+    ),
     check(
       'Username',
-      'Username contains non alphanumeric characters - not allowed'
+      'Username contains non alphanumeric characters - not allowed.'
     ).matches(/^[A-Za-z0-9 .,'!?%&]+$/),
     check('Password', 'Password is required').not().isEmpty(),
-    // check(
-    //   'Password',
-    //   "Password can contain only: /^[A-Za-z0-9 .,'!%&]+$/"
-    // ).matches(/^[A-Za-z0-9 .,'!?%&]+$/),
-    check('Email', "Email doesn't appear to be valid").isEmail,
+    check(
+      'Password',
+      "Password can contain only: /^[A-Za-z0-9 .,'!%&]+$/"
+    ).matches(/^[A-Za-z0-9 .,'!?%&]+$/),
+    check('Email', 'Email does not appear to be valid').isEmail(),
   ],
   (req, res) => {
     // check the validation object for errors

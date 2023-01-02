@@ -276,3 +276,5 @@ Timestamp: Fri Dec 09 2022 00:15:06 GMT+0100 (Central European Standard Time)
 ::1 - - [02/Jan/2023:13:59:50 +0000] "GET /users HTTP/1.1" 201 1729 "-" "PostmanRuntime/7.30.0"
 ::1 - - [02/Jan/2023:14:01:19 +0000] "PUT /users/Susi HTTP/1.1" 200 236 "-" "PostmanRuntime/7.30.0"
 ::1 - - [02/Jan/2023:14:03:28 +0000] "PUT /users/Susanna%20Monini HTTP/1.1" 200 226 "-" "PostmanRuntime/7.30.0"
+::1 - - [02/Jan/2023:14:07:03 +0000] "POST /users HTTP/1.1" - - "-" "PostmanRuntime/7.30.0"
+::1 - - [02/Jan/2023:14:08:36 +0000] "POST /users HTTP/1.1" 201 233 "-" "PostmanRuntime/7.30.0"
