@@ -121,6 +121,34 @@ app.get(
 app.post(
   '/movies',
   passport.authenticate('jwt', { session: false }),
+  [
+    check('Title', 'Title is required').not().isEmpty(),
+    check('Title', 'Title contains not allowed characters - ').matches(
+      /^[A-Za-z0-9 .,'"!?%&]+$/
+    ),
+    check('Description', 'Description is required').not().isEmpty(),
+    check(
+      'Genre.Name',
+      'Genre name contains non alphanumeric characters - not allowed'
+    ).isAlphanumeric(),
+    check(
+      'Genre.Description',
+      'Genre description contains non alphanumeric characters - not allowed'
+    ).isAlphanumeric(),
+    check(
+      'Director.Name',
+      'Director name contains non alphanumeric characters - not allowed'
+    ).isAlphanumeric(),
+    check(
+      'Director.Bio',
+      'Director bio contains non alphanumeric characters - not allowed'
+    ).isAlphanumeric(),
+    check('Actors', 'Actors contains not allowed characters').matches(
+      /^[A-Za-z0-9 .,'"!?%&]+$/
+    ),
+    check('Featured', "Featured can be only boolean 'true' or 'false'")
+      .isBoolean,
+  ],
   (req, res) => {
     Movies.findOne({ Title: req.body.Title })
       .then((movie) => {
@@ -158,27 +186,104 @@ app.post(
   }
 );
 
+// Allow users to update movie info
+// Can i take all validation criterias to "Create movie" endpoints
+app.put(
+  '/movies/:Title',
+  passport.authenticate('jwt', { session: false }),
+  [
+    check('Title', 'Title is required').not().isEmpty(),
+    check('Title', 'Title contains not allowed characters - ').matches(
+      /^[A-Za-z0-9 .,'"!?%&]+$/
+    ),
+    check('Description', 'Description is required').not().isEmpty(),
+    check(
+      'Genre.Name',
+      'Genre name contains non alphanumeric characters - not allowed'
+    ).isAlphanumeric(),
+    check(
+      'Genre.Description',
+      'Genre description contains non alphanumeric characters - not allowed'
+    ).isAlphanumeric(),
+    check(
+      'Director.Name',
+      'Director name contains non alphanumeric characters - not allowed'
+    ).isAlphanumeric(),
+    check(
+      'Director.Bio',
+      'Director bio contains non alphanumeric characters - not allowed'
+    ).isAlphanumeric(),
+    check('Actors', 'Actors contains not allowed characters').matches(
+      /^[A-Za-z0-9 .,'"!?%&]+$/
+    ),
+    check('Featured', "Featured can be only boolean 'true' or 'false'")
+      .isBoolean,
+  ],
+  (req, res) => {
+    let errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+
+    Movies.findOneAndUpdate(
+      { Title: req.params.Title },
+      {
+        $set: {
+          Title: req.body.Title,
+          Description: req.body.Description,
+          Genre: {
+            Name: req.body.Genre.Name,
+            Description: req.body.Genre.Description,
+          },
+          Director: {
+            Name: req.body.Director.Name,
+            Bio: req.body.Director.Bio,
+          },
+          Actors: req.body.Actors,
+          ImagePath: req.body.ImageURL,
+          Featured: req.body.Featured,
+        },
+      },
+      { new: true },
+      (err, updatedMovie) => {
+        if (err) {
+          console.error(err);
+          res.status(500).send('Error: ' + err);
+        } else {
+          res.json(updatedMovie);
+        }
+      }
+    );
+  }
+);
+
 // !!!!!!!!!!!!!Allow new users to Register (CREATE)
 // Returns a JSON object holding data about the users to add
 // date appears with month -1 (if i put april in new user appears march)
+// How to validate a date?
 app.post(
   '/users',
   // Validation logic for request
+
   [
     check('Username', 'Username is required').isLength({ min: 3 }),
     check(
       'Username',
       'Username contains non alphanumeric characters - not allowed'
-    ).isAlphanumeric(),
+    ).matches(/^[A-Za-z0-9 .,'!?%&]+$/),
     check('Password', 'Password is required').not().isEmpty(),
-    check('Email', 'Email doesn\'t appear to be valid').isEmail
+    check(
+      'Password',
+      "Password can contain only: /^[A-Za-z0-9 .,'!%&]+$/"
+    ).matches(/^[A-Za-z0-9 .,'!?%&]+$/),
+    check('Email', "Email doesn't appear to be valid").isEmail,
   ],
   (req, res) => {
     // check the validation object for errors
     let errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      return res.status(422).json({errors: errors.array()});
+      return res.status(422).json({ errors: errors.array() });
     }
     // Hash any password entered by the user when registering before storing it in the MongoDB database
     let hashedPassword = Users.hashPassword(req.body.Password);
@@ -227,17 +332,41 @@ app.get(
 
 // !!!!!!! Allow new users update their user info (UPDATE)
 // Returnes JSON object with updated information.
+// Express-validator doesn't work with names that contain more than 1 word (%20)
+// Express-validator turns error Username contains non alphanumeric characters - not allowed
 
 app.put(
   '/users/:Username',
   passport.authenticate('jwt', { session: false }),
+  [
+    check('Username', 'Username is required').isLength({ min: 3 }),
+    check(
+      'Username',
+      'Username contains non alphanumeric characters - not allowed'
+    ).matches(/^[A-Za-z0-9 .,'!?%&]+$/),
+    check('Password', 'Password is required').not().isEmpty(),
+    check(
+      'Password',
+      "Password can contain only: /^[A-Za-z0-9 .,'!%&]+$/"
+    ).matches(/^[A-Za-z0-9 .,'!?%&]+$/),
+    check('Email', "Email doesn't appear to be valid").isEmail,
+  ],
   (req, res) => {
+    // check the validation object for errors
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+    // Hash any password entered by the user when registering before storing it in the MongoDB database
+    let hashedPassword = Users.hashPassword(req.body.Password);
     Users.findOneAndUpdate(
       { Username: req.params.Username },
       {
         $set: {
           Username: req.body.Username,
-          Password: req.body.Password,
+          // Password: req.body.Password,
+          Password: hashedPassword,
           Email: req.body.Email,
           Birthday: req.body.Birthday,
         },
