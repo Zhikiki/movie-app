@@ -326,3 +326,7 @@ Timestamp: Fri Dec 09 2022 00:15:06 GMT+0100 (Central European Standard Time)
 ::1 - - [02/Jan/2023:16:35:20 +0000] "POST /movies HTTP/1.1" 422 573 "-" "PostmanRuntime/7.30.0"
 ::1 - - [02/Jan/2023:16:37:17 +0000] "POST /movies HTTP/1.1" 422 573 "-" "PostmanRuntime/7.30.0"
 ::1 - - [02/Jan/2023:16:37:39 +0000] "POST /movies HTTP/1.1" 201 427 "-" "PostmanRuntime/7.30.0"
+::1 - - [02/Jan/2023:16:43:42 +0000] "PUT /movies/Some%20name%20for%20movie HTTP/1.1" 200 430 "-" "PostmanRuntime/7.30.0"
+::1 - - [02/Jan/2023:16:44:09 +0000] "GET /movies HTTP/1.1" 200 7913 "-" "PostmanRuntime/7.30.0"
+::1 - - [02/Jan/2023:16:46:34 +0000] "PUT /movies/Some%20name%20for%20movie HTTP/1.1" 200 4 "-" "PostmanRuntime/7.30.0"
+::1 - - [02/Jan/2023:16:47:02 +0000] "PUT /movies/Another%20name%20for%20movie HTTP/1.1" 200 426 "-" "PostmanRuntime/7.30.0"
