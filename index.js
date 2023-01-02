@@ -160,6 +160,7 @@ app.post(
 // Returns a JSON object holding data about the users to add
 // date appears with month -1 (if i put april in new user appears march)
 app.post('/users', (req, res) => {
+  // Hash any password entered by the user when registering before storing it in the MongoDB database
   let hashedPassword = Users.hashPassword(req.body.Password);
   Users.findOne({ Username: req.body.Username })
     .then((user) => {

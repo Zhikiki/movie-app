@@ -33,6 +33,12 @@ passport.use(
           });
         }
 
+        // Validation of password that user enter together with username
+        if (!user.validatePassword(password)) {
+          console.log('incorrect password');
+          return callback(null, false, { message: 'Incorrect password.' });
+        }
+
         // If there is a match in Mongoose DB callback function is being executed (this is login endpoint)
         console.log('finished');
         return callback(null, user);
