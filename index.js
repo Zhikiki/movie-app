@@ -121,35 +121,41 @@ app.get(
 app.post(
   '/movies',
   passport.authenticate('jwt', { session: false }),
-  // [
-  //   check('Title', 'Title is required').not().isEmpty(),
-  //   check('Title', 'Title contains not allowed characters - ').matches(
-  //     /^[A-Za-z0-9 .,'"!?%&]+$/
-  //   ),
-  //   check('Description', 'Description is required').not().isEmpty(),
-  //   check(
-  //     'Genre.Name',
-  //     'Genre name contains non alphanumeric characters - not allowed'
-  //   ).isAlphanumeric(),
-  //   check(
-  //     'Genre.Description',
-  //     'Genre description contains non alphanumeric characters - not allowed'
-  //   ).isAlphanumeric(),
-  //   check(
-  //     'Director.Name',
-  //     'Director name contains non alphanumeric characters - not allowed'
-  //   ).isAlphanumeric(),
-  //   check(
-  //     'Director.Bio',
-  //     'Director bio contains non alphanumeric characters - not allowed'
-  //   ).isAlphanumeric(),
-  //   check('Actors', 'Actors contains not allowed characters').matches(
-  //     /^[A-Za-z0-9 .,'"!?%&]+$/
-  //   ),
-  //   check('Featured', "Featured can be only boolean 'true' or 'false'")
-  //     .isBoolean,
-  // ],
+  [
+    check('Title', 'Title is required').not().isEmpty(),
+    check('Title', 'Title contains non allowed characters.').matches(
+      /^[A-Za-z0-9 .,'!?%&]+$/
+    ),
+    check('Description', 'Description is required').not().isEmpty(),
+    check(
+      'Genre.Name',
+      'Genre name contains non alphanumeric characters - not allowed'
+    ).matches(/^[A-Za-z0-9 .,'!?%&]+$/),
+    check(
+      'Genre.Description',
+      'Genre description contains non alphanumeric characters - not allowed'
+    ).matches(/^[A-Za-z0-9 .,'!?%&]+$/),
+    check(
+      'Director.Name',
+      'Director name contains non alphanumeric characters - not allowed'
+    ).matches(/^[A-Za-z0-9 .,'!?%&]+$/),
+    check(
+      'Director.Bio',
+      'Director bio contains non alphanumeric characters - not allowed'
+    ).matches(/^[A-Za-z0-9 .,'!?%&]+$/),
+    check('Actors', 'Actors contains non allowed characters.').matches(
+      /^[A-Za-z0-9 .,'!?%&]+$/
+    ),
+    // check('Featured', "Featured can be only boolean 'true' or 'false'")
+    //   .isBoolean,
+  ],
   (req, res) => {
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+
     Movies.findOne({ Title: req.body.Title })
       .then((movie) => {
         if (movie) {
