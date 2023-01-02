@@ -35,6 +35,8 @@ let auth = require('./auth')(app);
 const passport = require('passport');
 require('./passport');
 
+const { check, validationResult} = require('express-validator');
+
 //  returns a default textual response
 app.get('/', (req, res) => {
   res.send('Welcome to my movie-api app');
