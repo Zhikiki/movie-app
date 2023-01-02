@@ -35,7 +35,7 @@ let auth = require('./auth')(app);
 const passport = require('passport');
 require('./passport');
 
-const { check, validationResult} = require('express-validator');
+const { check, validationResult } = require('express-validator');
 
 //  returns a default textual response
 app.get('/', (req, res) => {
@@ -161,34 +161,53 @@ app.post(
 // !!!!!!!!!!!!!Allow new users to Register (CREATE)
 // Returns a JSON object holding data about the users to add
 // date appears with month -1 (if i put april in new user appears march)
-app.post('/users', (req, res) => {
-  // Hash any password entered by the user when registering before storing it in the MongoDB database
-  let hashedPassword = Users.hashPassword(req.body.Password);
-  Users.findOne({ Username: req.body.Username })
-    .then((user) => {
-      if (user) {
-        return res.status(400).send(req.body.Username + ' already exists');
-      } else {
-        Users.create({
-          Username: req.body.Username,
-          Password: hashedPassword,
-          Email: req.body.Email,
-          Birthday: req.body.Birthday,
-        })
-          .then((user) => {
-            res.status(201).json(user);
+app.post(
+  '/users',
+  // Validation logic for request
+  [
+    check('Username', 'Username is required').isLength({ min: 3 }),
+    check(
+      'Username',
+      'Username contains non alphanumeric characters - not allowed'
+    ).isAlphanumeric(),
+    check('Password', 'Password is required').not().isEmpty(),
+    check('Email', 'Email doesn\'t appear to be valid').isEmail
+  ],
+  (req, res) => {
+    // check the validation object for errors
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(422).json({errors: errors.array()});
+    }
+    // Hash any password entered by the user when registering before storing it in the MongoDB database
+    let hashedPassword = Users.hashPassword(req.body.Password);
+    Users.findOne({ Username: req.body.Username })
+      .then((user) => {
+        if (user) {
+          return res.status(400).send(req.body.Username + ' already exists');
+        } else {
+          Users.create({
+            Username: req.body.Username,
+            Password: hashedPassword,
+            Email: req.body.Email,
+            Birthday: req.body.Birthday,
           })
-          .catch((error) => {
-            console.error(error);
-            res.status(500).send('Error: ' + error);
-          });
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).send('Error: ' + error);
-    });
-});
+            .then((user) => {
+              res.status(201).json(user);
+            })
+            .catch((error) => {
+              console.error(error);
+              res.status(500).send('Error: ' + error);
+            });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
+      });
+  }
+);
 
 // !!!!!!!!Returns a JSON object holding data about all the USERS (REED)
 app.get(
