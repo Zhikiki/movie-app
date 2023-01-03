@@ -129,27 +129,27 @@ app.post(
   [
     check('Title', 'Title is required').not().isEmpty(),
     check('Title', 'Title contains non allowed characters.').matches(
-      /^[A-Za-z0-9 .,'!?%&]-+$/
+      /^[A-Za-z0-9 .,'!?%&]+$/
     ),
     check('Description', 'Description is required').not().isEmpty(),
     check(
       'Genre.Name',
       'Genre name contains non alphanumeric characters - not allowed'
-    ).matches(/^[A-Za-z0-9 .,'!?%&]-+$/),
+    ).matches(/^[A-Za-z0-9 .,'!?%&]+$/),
     check(
       'Genre.Description',
       'Genre description contains non alphanumeric characters - not allowed'
-    ).matches(/^[A-Za-z0-9 .,'!?%&]-+$/),
+    ).matches(/^[A-Za-z0-9 .,'!?%&]+$/),
     check(
       'Director.Name',
       'Director name contains non alphanumeric characters - not allowed'
-    ).matches(/^[A-Za-z0-9 .,'!?%&]-+$/),
+    ).matches(/^[A-Za-z0-9 .,'!?%&]+$/),
     check(
       'Director.Bio',
       'Director bio contains non alphanumeric characters - not allowed'
-    ).matches(/^[A-Za-z0-9 .,'!?%&]-+$/),
+    ).matches(/^[A-Za-z0-9 .,'!?%&]+$/),
     check('Actors', 'Actors contains non allowed characters.').matches(
-      /^[A-Za-z0-9 .,'!?%&]-+$/
+      /^[A-Za-z0-9 .,'!?%&]+$/
     ),
     // check('Featured', "Featured can be only boolean 'true' or 'false'")
     //   .isBoolean,
@@ -204,27 +204,27 @@ app.put(
   [
     check('Title', 'Title is required').not().isEmpty(),
     check('Title', 'Title contains non allowed characters.').matches(
-      /^[A-Za-z0-9 .,'!?%&]-+$/
+      /^[A-Za-z0-9 .,'!?%&]+$/
     ),
     check('Description', 'Description is required').not().isEmpty(),
     check(
       'Genre.Name',
       'Genre name contains non alphanumeric characters - not allowed'
-    ).matches(/^[A-Za-z0-9 .,'!?%&]-+$/),
+    ).matches(/^[A-Za-z0-9 .,'!?%&]+$/),
     check(
       'Genre.Description',
       'Genre description contains non alphanumeric characters - not allowed'
-    ).matches(/^[A-Za-z0-9 .,'!?%&]-+$/),
+    ).matches(/^[A-Za-z0-9 .,'!?%&]+$/),
     check(
       'Director.Name',
       'Director name contains non alphanumeric characters - not allowed'
-    ).matches(/^[A-Za-z0-9 .,'!?%&]-+$/),
+    ).matches(/^[A-Za-z0-9 .,'!?%&]+$/),
     check(
       'Director.Bio',
       'Director bio contains non alphanumeric characters - not allowed'
-    ).matches(/^[A-Za-z0-9 .,'!?%&]-+$/),
+    ).matches(/^[A-Za-z0-9 .,'!?%&]+$/),
     check('Actors', 'Actors contains non allowed characters.').matches(
-      /^[A-Za-z0-9 .,'!?%&]-+$/
+      /^[A-Za-z0-9 .,'!?%&]+$/
     ),
     // check('Featured', "Featured can be only boolean 'true' or 'false'")
     //   .isBoolean,
@@ -302,12 +302,12 @@ app.post(
     check(
       'Username',
       'Username contains non alphanumeric characters - not allowed.'
-    ).matches(/^[A-Za-z0-9 .,'!?%&]-+$/),
+    ).matches(/^[A-Za-z0-9 .,'!?%&]+$/),
     check('Password', 'Password is required').not().isEmpty(),
     check(
       'Password',
       "Password can contain only: /^[A-Za-z0-9 .,'!%&]+$/"
-    ).matches(/^[A-Za-z0-9 .,'!?%&]-+$/),
+    ).matches(/^[A-Za-z0-9 .,'!?%&]+$/),
     check('Email', 'Email does not appear to be valid').isEmail(),
   ],
   (req, res) => {
@@ -377,12 +377,12 @@ app.put(
     check(
       'Username',
       'Username contains non alphanumeric characters - not allowed.'
-    ).matches(/^[A-Za-z0-9 .,'!?%&]-+$/),
+    ).matches(/^[A-Za-z0-9 .,'!?%&]+$/),
     check('Password', 'Password is required').not().isEmpty(),
     check(
       'Password',
       "Password can contain only: /^[A-Za-z0-9 .,'!%&]+$/"
-    ).matches(/^[A-Za-z0-9 .,'!?%&]-+$/),
+    ).matches(/^[A-Za-z0-9 .,'!?%&]+$/),
     check('Email', 'Email does not appear to be valid').isEmail(),
   ],
   (req, res) => {
