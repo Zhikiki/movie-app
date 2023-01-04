@@ -27,14 +27,14 @@ This app utilizes a RESTful API to store and display movie and user information 
 ### Server: Node.js, requiring Express
 ### Frontend: React (not currently implemented yet!)
 
-The API uses middleware modules, such as:
-- the body-parser package for reading data from requests 
-- morgan for logging.
+- The API uses middleware modules, such as:
+-- the body-parser package for reading data from requests 
+-- morgan for logging.
 
-The business logic modeled with Mongoose.
-The API provides movie information in JSON format.
-The API is tested in Postman.
-The API includes user authentication and authorization code.
-The API includes data validation logic.
+- The business logic modeled with Mongoose.
+- The API provides movie information in JSON format.
+- The API is tested in Postman.
+- The API includes user authentication and authorization code.
+- The API includes data validation logic.
 
 
