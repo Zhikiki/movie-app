@@ -289,7 +289,6 @@ app.delete(
 
 // !!!!!!!!!!!!!Allow new users to Register (CREATE)
 // Returns a JSON object holding data about the users to add
-// date appears with month -1 (if i put april in new user appears march)
 // How to validate a date?
 app.post(
   '/users',
@@ -364,8 +363,6 @@ app.get(
 
 // !!!!!!! Allow new users update their user info (UPDATE)
 // Returnes JSON object with updated information.
-// Express-validator doesn't work with names that contain more than 1 word (%20)
-// Express-validator turns error Username contains non alphanumeric characters - not allowed
 
 app.put(
   '/users/:Username',
@@ -420,7 +417,7 @@ app.put(
 
 // !!!!!!!! Adds movie to favorite list (CREATE)
 // Returnes JSON with updated user info
-// Better to implement check if movie is already added to favorite
+// Better to implement check if movie is already added to favourite
 app.post(
   '/users/:Username/movies/:MovieID',
   passport.authenticate('jwt', { session: false }),
@@ -444,7 +441,7 @@ app.post(
 );
 
 // Delete movie from favorite list (DELETE)
-// A text message indicating whether the movie was successfully removed from user's favorite list
+// Returnes JSON with updated user info
 app.delete(
   '/users/:Username/movies/:MovieID',
   passport.authenticate('jwt', { session: false }),
