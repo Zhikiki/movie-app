@@ -42,9 +42,14 @@ require('./passport');
 
 const { check, validationResult } = require('express-validator');
 
-//  returns a default textual response
+app.use(express.static(__dirname, +'public'));
+
 app.get('/', (req, res) => {
-  res.send('Welcome to my movie-api app');
+  res.send("Welcome to my movie API");
+})
+
+app.get('/documentation', (req, res) => {
+  res.status(200).sendFile('/public/documentation.html', { root: __dirname });
 });
 
 // Returns a JSON object holding data about all the movies (REED)
@@ -484,7 +489,7 @@ app.delete(
   }
 );
 
-app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'public')));
 
 // ERROR Handling
 app.use((err, req, res, next) => {
@@ -493,7 +498,7 @@ app.use((err, req, res, next) => {
 });
 
 // listen for requests
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 5555;
 app.listen(port, '0.0.0.0', () => {
   console.log('Listening on Port ' + port);
 });
