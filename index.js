@@ -55,7 +55,8 @@ app.get('/documentation', (req, res) => {
 // Returns a JSON object holding data about all the movies (REED)
 app.get(
   '/movies',
-  passport.authenticate('jwt', { session: false }),
+  // Temporary removed
+  // passport.authenticate('jwt', { session: false }),
   (req, res) => {
     // Varification of user, if he is changing his user info or someone else
     // console.log(req.user);
