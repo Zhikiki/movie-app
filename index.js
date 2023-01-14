@@ -45,8 +45,8 @@ const { check, validationResult } = require('express-validator');
 app.use(express.static(__dirname, +'public'));
 
 app.get('/', (req, res) => {
-  res.send("Welcome to my movie API");
-})
+  res.send('Welcome to my movie API');
+});
 
 app.get('/documentation', (req, res) => {
   res.status(200).sendFile('/public/documentation.html', { root: __dirname });
@@ -57,6 +57,11 @@ app.get(
   '/movies',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
+    // Varification of user, if he is changing his user info or someone else
+    // console.log(req.user);
+    // if (req.user.Username !== req.params.username) {
+    //   res.status(400).send('Are you trying to modify someoneelse recoord');
+    // }
     Movies.find()
       .then((movies) => {
         res.status(200).json(movies);
@@ -312,7 +317,10 @@ app.post(
       'Password',
       "Password can contain only: /^[A-Za-z0-9 .,'!%&]+$/"
     ).matches(/^[A-Za-z0-9 .,'!?%&]+$/),
-    check('Email', 'Email does not appear to be valid').isEmail(),
+    check('Email', 'Email does not appear to be valid')
+      .not()
+      .isEmpty()
+      .isEmail(),
   ],
   (req, res) => {
     // check the validation object for errors
