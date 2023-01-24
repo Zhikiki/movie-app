@@ -374,6 +374,22 @@ app.get(
   }
 );
 
+// Returns JSON object by single user bu username
+app.get(
+  '/users/:username',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    Users.findOne({ Username: req.params.username })
+      .then((user) => {
+        res.status(200).json(user);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+      });
+  }
+);
+
 // !!!!!!! Allow new users update their user info (UPDATE)
 // Returnes JSON object with updated information.
 
