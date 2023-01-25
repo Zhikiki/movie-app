@@ -35,7 +35,7 @@ const cors = require('cors');
 let allowedOrigins = [
   'http://localhost:8080',
   'http://localhost:1234',
-  'https://myfliks-zhikiki.netlify.app/',
+  'https://myfliks-zhikiki.netlify.app',
 ];
 app.use(
   cors({
