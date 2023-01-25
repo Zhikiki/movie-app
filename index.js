@@ -32,7 +32,25 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {
 app.use(morgan('combined', { stream: accessLogStream }));
 
 const cors = require('cors');
-app.use(cors());
+let allowedOrigins = [
+  'http://localhost:8080',
+  'http://localhost:1234',
+  'https://myfliks-zhikiki.netlify.app/',
+];
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) {
+        return callback(null, true);
+      }
+      if (allowedOrigins.indexOf(origin) === -1) {
+        let message = `The CORS policy for this application doesn't allow access from origin ${origin}`;
+        return callback(new Error(message), false);
+      }
+      return callback(null, true);
+    },
+  })
+);
 
 // Importing auth.js - end point for registrated users to log in
 let auth = require('./auth')(app);
