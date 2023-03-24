@@ -37,7 +37,7 @@ let allowedOrigins = [
   'http://localhost:1234',
   'http://localhost:4200',
   'https://myfliks-zhikiki.netlify.app',
-  'https://zhikiki.github.iohttps://zhikiki.github.io',
+  'https://zhikiki.github.io',
 ];
 app.use(
   cors({
