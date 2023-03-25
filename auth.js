@@ -1,26 +1,35 @@
-const jwtSecret = 'your_jwt_secret';
-// This has to be the same key used in the JWTStrategy in passport.js file
+const jwtSecret = 'your_jwt_secret'; // This has to be the same key used in the JWTStrategy in passport.js file
 
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 
-// Importing local passport file
-require('./passport');
+require('./passport'); // Importing local passport file
 
 // Here we create JWT based on username and password
 // We get parametr "user" from second function
+/**
+ * This function creates JWT based on username and password
+ * @function generateJWTToken
+ * @param {object} user - received after checking the user exists in database
+ * @returns @user object, JWT, and additional info on token
+ */
 let generateJWTToken = (user) => {
   return jwt.sign(user, jwtSecret, {
-    // This is the username you’re encoding in the JWT
-    subject: user.Username,
-    // This specifies that the token will expire in 7 days
-    expiresIn: '7d',
-    // This is the algorithm used to “sign” or encode the values of the JWT
-    algorithm: 'HS256',
+    subject: user.Username, // This is the username you’re encoding in the JWT
+    expiresIn: '7d', // This specifies that the token will expire in 7 days
+    algorithm: 'HS256', // This is the algorithm used to “sign” or encode the values of the JWT
   });
 };
 
 /* POST login. */
+/**
+ * This function checks if user exists in DB, handles user login, generates JWT upon login
+ * @name postLogin
+ * @kind function
+ * @returns user object with JWT
+ * @requires passport
+ * @param router to get API endpoint
+ */
 module.exports = (router) => {
   router.post('/login', (req, res) => {
     // The code uses the LocalStrategy to check
@@ -40,9 +49,8 @@ module.exports = (router) => {
           res.send(error);
         }
         let token = generateJWTToken(user.toJSON());
-        // line of code that returns the token
-        // shorthand for res.json({ user: user, token: token })
-        return res.json({ user, token });
+
+        return res.json({ user, token }); // line of code that returns the token. shorthand for res.json({ user: user, token: token })
       });
     })(req, res);
   });
