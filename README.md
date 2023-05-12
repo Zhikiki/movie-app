@@ -32,7 +32,7 @@ This app utilizes a RESTful API to store and display movie and user information 
 
 ### Server: Node.js, requiring Express
 
-### Frontend: React (not currently implemented yet!)
+### Frontend: React ([GitHub repo](https://github.com/Zhikiki/myFlix-client), Angular ([GitHub repo](https://github.com/Zhikiki/myFlix-Angular-client))
 
 - The API uses middleware modules, such as the body-parser package (for reading data from requests) and morgan for logging.
 - The business logic modeled with Mongoose.
