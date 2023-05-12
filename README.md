@@ -1,7 +1,7 @@
 # movie_api
 
 - Deployed app link: https://movie-api-zhikiki.herokuapp.com/
-- Further documentation: https://movie-api-zhikiki.herokuapp.com/documentation.html
+- Further documentation: https://movie-api-zhikiki.herokuapp.com/documentation
 
 ## Description
 
